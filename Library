@@ -1,0 +1,69 @@
+#Criando funções no pandas
+
+import pandas as pd
+
+salario = pd.read_csv(r'C:\Users\Ana Carolina Meliti\Downloads\archive\ds_salaries.csv')
+salario.head()
+
+def ajuste_salario(salary):
+    salario1 = str(salary).replace('$', '').replace(',', '') # Conversão de String para Float
+    output = float(salario1)
+    return output
+
+salario['salary'] = salario['salary'].apply(ajuste_salario)
+salario['salary'].head()
+
+#Library PandaSQL
+
+import pandas as pd
+import pandasql as ps
+
+salario = pd.read_csv(r'C:\Users\Ana Carolina Meliti\Downloads\archive\ds_salaries.csv')
+salario.head()
+
+query = """SELECT * from salario limit 5"""
+ps.sqldf(query, locals())
+
+#Retirando a media salarial por nível de experiencia
+
+import pandasql as ps 
+import pandas as pd
+
+salario = pd.read_csv(r'C:\Users\Ana Carolina Meliti\Downloads\archive\ds_salaries.csv')
+
+query = """
+SELECT experience_level, avg(salary) as avg_salary
+from salario
+group by experience_level
+order by avg_salary desc
+"""
+ps.sqldf(query, locals())
+
+# Library Sweetviz
+
+import pandas as pd 
+import sweetviz as sv
+import numpy as np
+
+salario = pd.read_csv(r'C:\Users\Ana Carolina Meliti\Downloads\archive\ds_salaries.csv')
+salario.head()
+
+report = sv.analyze(salario)
+report.show_html(layout='vertical') 
+
+#Comando comparação
+
+import pandas as pd
+import sweetviz as sv
+import numpy as np
+
+salario = pd.read_csv(r'C:\Users\Ana Carolina Meliti\Downloads\archive\ds_salaries.csv')
+
+msk = np.random.rand(len(salario)) < 0.8
+train = salario[msk]
+teste = salario[msk]
+
+train.head() #80% de tabela
+
+report = sv.compare([train, 'training set'], [teste, 'testing set'])
+report.show_html(layout='vertical')
