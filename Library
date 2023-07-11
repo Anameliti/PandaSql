@@ -67,3 +67,36 @@ train.head() #80% de tabela
 
 report = sv.compare([train, 'training set'], [teste, 'testing set'])
 report.show_html(layout='vertical')
+
+#Funções de Excel no PandaSql
+#Somase e Contase
+
+#Realizando a leitura do dataset
+
+df = pd.read_csv(r'C:\Users\Ana Carolina Meliti\Downloads\marketing_campaign.csv', delimiter='\t')
+df.head()
+
+#Utilização de query para realizar as funcoes
+
+import pandasql as ps
+
+query = ''' SELECT Marital_Status, sum(Kidhome) as soma_Kidhome
+FROM df
+group by Marital_Status'''
+ps.sqldf(query, locals())
+
+query = ''' select Marital_Status, count(KidHome) as cont_KidHome
+from df
+group by Marital_Status'''
+
+ps.sqldf(query, locals())
+
+#Utilização do comando LOC para realizar as funcoes
+
+df.loc[df['Marital_Status']=='Single']['Kidhome'].sum()
+
+df.loc[df['Marital_Status']=='Single']['Kidhome'].count()
+
+
+
+
