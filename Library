@@ -131,3 +131,17 @@ pd.pivot_table(data_filter,
                aggfunc=sum)
 
 
+#Incluindo mais indices para a tabela dinamica e salvando em CSV
+
+pivot_table = pd.pivot_table(data, index=['Marital_Status','MntWines'],
+              values=['Income','AcceptedCmp1', 'AcceptedCmp2', 'AcceptedCmp3', 'AcceptedCmp4', 'AcceptedCmp5'],
+              aggfunc=np.sum)
+pivot_table.to_csv("pivot_table.csv", sep=';', decimal=",")
+
+#Realizando a ultima modificação na tabela dinamica 
+
+pd.pivot_table(data, index=['Marital_Status'],
+              values=['Income','AcceptedCmp1', 'AcceptedCmp2', 'AcceptedCmp3'],
+              fill_value='0',
+              columns='Kidhome',
+              aggfunc= np.sum)
