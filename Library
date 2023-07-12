@@ -1,4 +1,4 @@
-#Criando funções no pandas
+##Criando funções no pandas
 
 import pandas as pd
 
@@ -13,7 +13,7 @@ def ajuste_salario(salary):
 salario['salary'] = salario['salary'].apply(ajuste_salario)
 salario['salary'].head()
 
-#Library PandaSQL
+##Library PandaSQL
 
 import pandas as pd
 import pandasql as ps
@@ -24,7 +24,7 @@ salario.head()
 query = """SELECT * from salario limit 5"""
 ps.sqldf(query, locals())
 
-#Retirando a media salarial por nível de experiencia
+##Retirando a media salarial por nível de experiencia
 
 import pandasql as ps 
 import pandas as pd
@@ -39,7 +39,7 @@ order by avg_salary desc
 """
 ps.sqldf(query, locals())
 
-# Library Sweetviz
+##Library Sweetviz
 
 import pandas as pd 
 import sweetviz as sv
@@ -51,7 +51,7 @@ salario.head()
 report = sv.analyze(salario)
 report.show_html(layout='vertical') 
 
-#Comando comparação
+##Comando comparação
 
 import pandas as pd
 import sweetviz as sv
@@ -68,15 +68,15 @@ train.head() #80% de tabela
 report = sv.compare([train, 'training set'], [teste, 'testing set'])
 report.show_html(layout='vertical')
 
-#Funções de Excel no PandaSql
-#Somase e Contase
+##Funções de Excel no PandaSql
+##Somase e Contase
 
-#Realizando a leitura do dataset
+##Realizando a leitura do dataset
 
 df = pd.read_csv(r'C:\Users\Ana Carolina Meliti\Downloads\marketing_campaign.csv', delimiter='\t')
 df.head()
 
-#Utilização de query para realizar as funcoes
+##Utilização de query para realizar as funcoes
 
 import pandasql as ps
 
@@ -91,12 +91,43 @@ group by Marital_Status'''
 
 ps.sqldf(query, locals())
 
-#Utilização do comando LOC para realizar as funcoes
+##Utilização do comando LOC para realizar as funcoes
 
 df.loc[df['Marital_Status']=='Single']['Kidhome'].sum()
 
 df.loc[df['Marital_Status']=='Single']['Kidhome'].count()
 
+#Desmembrando o loc acima
 
+df_filter = df.loc[df['Marital_Status'].isin(['Single','Married','Divorced'])]
+df_filter.groupby('Marital_Status').count()
+
+##Tabela Dinamica com Python/Pandas
+
+import pandas as pd
+import numpy as np
+
+data = pd.read_csv(r'C:\Users\Ana Carolina Meliti\Downloads\marketing_campaign.csv', delimiter='\t')
+data.head()
+
+#Sintaxe da tabela
+#pd.pivot_table(data, index=, aggfunc=)
+
+#fazendo um filtro do dataset antes
+
+data_filter = data[data['Marital_Status'].isin(['Single', 'Married', 'Divorced'])]
+
+#Somando e separando por estado civil e somando cada categoria sem o filtro de campos
+
+pd.pivot_table(data_filter, 
+               index='Marital_Status',
+               aggfunc=sum)
+
+#Tabela Dinamica tratada apenas com os valores de soma
+
+pd.pivot_table(data_filter, 
+               index='Marital_Status',
+               values=['Income','AcceptedCmp1', 'AcceptedCmp2', 'AcceptedCmp3', 'AcceptedCmp4', 'AcceptedCmp5'],
+               aggfunc=sum)
 
 
